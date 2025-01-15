@@ -128,6 +128,9 @@ Movie Manager to aplikacja webowa umożliwiająca zarządzanie listą filmów. K
 Aplikacja w pełni responsywna
 ![alt text](image-4.png)
 
+![alt text](image-5.png)
+![alt text](image-6.png)
+
 ---
 
 ## Autor
