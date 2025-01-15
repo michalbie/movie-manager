@@ -132,9 +132,7 @@ Aplikacja w pełni responsywna
 
 ## Autor
 
-Imię i nazwisko autora projektu.
-
----
+## Michał Biernacki
 
 ## Licencja
 
