@@ -18,5 +18,6 @@ export const fetchMovieById = (id) => API.get(`/movies/${id}`);
 export const addMovie = (movieData) => API.post("/movies", movieData);
 export const updateMovie = (id, movieData) => API.put(`/movies/${id}`, movieData);
 export const deleteMovie = (id) => API.delete(`/movies/${id}`);
+export const registerUser = (userData) => API.post("/register", userData);
 
 export default API;

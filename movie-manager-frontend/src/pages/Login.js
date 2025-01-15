@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
@@ -29,7 +29,7 @@ const Login = () => {
 
 	return (
 		<div className="min-h-screen bg-gray-100 flex items-center justify-center">
-			<div className="bg-white shadow-lg rounded-md p-8 w-96">
+			<div className="bg-white shadow-lg rounded-md p-8 w-full max-w-md">
 				<h1 className="text-2xl font-bold mb-6">Login</h1>
 				{error && <p className="text-red-500 mb-4">{error}</p>}
 				<form onSubmit={handleLogin}>
@@ -49,10 +49,16 @@ const Login = () => {
 						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
-					<button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700">
+					<button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition">
 						Login
 					</button>
 				</form>
+				<p className="text-gray-600 text-center mt-4">
+					Don't have an account?{" "}
+					<Link to="/register" className="text-blue-600 hover:underline">
+						Register here
+					</Link>
+				</p>
 			</div>
 		</div>
 	);

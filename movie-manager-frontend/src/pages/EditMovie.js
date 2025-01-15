@@ -1,20 +1,33 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { addMovie } from "../services/api";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchMovieById, updateMovie } from "../services/api";
 
-const AddMovie = () => {
+const EditMovie = () => {
+	const { id } = useParams();
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		title: "",
 		genre: "",
 		release_year: "",
 		director: "",
 		banner_url: "",
-		stars: "", // New field for star ratings
+		stars: "", // Star rating
 	});
-
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState(false);
-	const navigate = useNavigate(); // Initialize navigate
+
+	useEffect(() => {
+		const getMovie = async () => {
+			try {
+				const { data } = await fetchMovieById(id);
+				setFormData(data);
+			} catch (err) {
+				console.error("Error fetching movie:", err);
+				setError("Failed to load movie details.");
+			}
+		};
+		getMovie();
+	}, [id]);
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,23 +39,26 @@ const AddMovie = () => {
 		setSuccess(false);
 
 		try {
-			await addMovie(formData);
+			await updateMovie(id, formData);
 			setSuccess(true);
 			setTimeout(() => {
-				navigate("/"); // Redirect to home after success
+				navigate("/");
 			}, 2000);
-		} catch (error) {
-			console.error("Error adding movie:", error);
-			setError("Failed to add movie. Please try again.");
+		} catch (err) {
+			console.error("Error updating movie:", err);
+			setError("Failed to update movie. Please try again.");
 		}
 	};
+
+	if (error) {
+		return <p className="text-red-500 text-center mt-4">{error}</p>;
+	}
 
 	return (
 		<div className="min-h-screen bg-gray-100 flex items-center justify-center">
 			<div className="bg-white shadow-lg rounded-md p-8 w-full max-w-md">
-				<h1 className="text-2xl font-bold mb-6">Add New Movie</h1>
-				{error && <p className="text-red-500 mb-4">{error}</p>}
-				{success && <p className="text-green-500 mb-4">Movie added successfully! Redirecting...</p>}
+				<h1 className="text-2xl font-bold mb-6">Edit Movie</h1>
+				{success && <p className="text-green-500 mb-4">Movie updated successfully! Redirecting...</p>}
 				<form onSubmit={handleSubmit}>
 					<div className="mb-4">
 						<label className="block text-gray-700 mb-2">Title</label>
@@ -120,7 +136,7 @@ const AddMovie = () => {
 						</select>
 					</div>
 					<button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition">
-						Add Movie
+						Update Movie
 					</button>
 				</form>
 			</div>
@@ -128,4 +144,4 @@ const AddMovie = () => {
 	);
 };
 
-export default AddMovie;
+export default EditMovie;

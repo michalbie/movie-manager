@@ -10,8 +10,10 @@ class MovieController extends Controller
 {
     public function index()
     {
-        return response()->json(Movie::paginate(10));
+        $movies = Movie::where('user_id', auth()->id())->get();
+        return response()->json($movies);
     }
+
 
     public function store(Request $request)
     {
@@ -20,13 +22,24 @@ class MovieController extends Controller
             'genre' => 'required|string|max:255',
             'release_year' => 'required|integer',
             'director' => 'required|string|max:255',
-            'banner_url' => 'nullable|url', // Validate as a URL if provided
+            'banner_url' => 'nullable|url',
+            'stars' => 'nullable|integer|min:1|max:5',
         ]);
 
-        $movie = Movie::create($request->all());
+        $movie = Movie::create([
+            'title' => $request->title,
+            'genre' => $request->genre,
+            'release_year' => $request->release_year,
+            'director' => $request->director,
+            'banner_url' => $request->banner_url,
+            'stars' => $request->stars,
+            'user_id' => auth()->id(), // Automatically assign the logged-in user's ID
+        ]);
 
         return response()->json($movie, 201);
     }
+
+
 
     public function update(Request $request, $id)
     {
@@ -36,6 +49,7 @@ class MovieController extends Controller
             'release_year' => 'required|integer',
             'director' => 'required|string|max:255',
             'banner_url' => 'nullable|url',
+            'stars' => 'nullable|integer|min:1|max:5',
         ]);
 
         $movie = Movie::findOrFail($id);
@@ -43,6 +57,7 @@ class MovieController extends Controller
 
         return response()->json($movie);
     }
+
 
     public function show($id)
     {

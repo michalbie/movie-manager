@@ -6,6 +6,9 @@ import AddMovie from "./pages/AddMovie";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
+import EditMovie from "./pages/EditMovie";
+import Register from "./pages/Register";
+import Admin from "./pages/Admin";
 
 const App = () => {
 	return (
@@ -14,6 +17,15 @@ const App = () => {
 				<Navbar />
 				<Routes>
 					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
+					<Route
+						path="/admin"
+						element={
+							<ProtectedRoute>
+								<Admin />
+							</ProtectedRoute>
+						}
+					/>
 					<Route
 						path="/"
 						element={
@@ -35,6 +47,14 @@ const App = () => {
 						element={
 							<ProtectedRoute>
 								<AddMovie />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/edit-movie/:id"
+						element={
+							<ProtectedRoute>
+								<EditMovie />
 							</ProtectedRoute>
 						}
 					/>
